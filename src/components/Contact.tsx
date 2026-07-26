@@ -5,12 +5,24 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 6000);
-  };
-
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  try {
+    const response = await fetch("https://formspree.io/f/xzdnklgr", {
+      method: "POST",
+      headers: { "Accept": "application/json" },
+      body: JSON.stringify(form),
+    });
+    if (response.ok) {
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 6000);
+    } else {
+      alert("Something went wrong. Please try again.");
+    }
+  } catch (error) {
+    alert("Something went wrong. Please try again.");
+  }
+};
   return (
     <section id="contact" className="bg-gradient-to-b from-paper to-cream py-20 md:py-28">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
